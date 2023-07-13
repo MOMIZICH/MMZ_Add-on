@@ -120,6 +120,10 @@ class AddBooleanOperator(bpy.types.Operator):
             bpy.data.objects[target_name_old].display_type = "WIRE" #対象オブジェクトをワイヤーフレーム表示に
         elif mode =="UNION": #合成モードだったら
             bpy.data.objects[target_name_old].hide_viewport = True #対象オブジェクトを非表示に(アウトライナーからは弄れない)
+            bpy.data.objects[target_name_old].hide_render = True #レンダリングしない
+        elif mode == "INTERSECT": #交差モードだったら
+            bpy.data.objects[target_name_old].hide_viewport = True #対象オブジェクトを非表示に(アウトライナーからは弄れない)
+            bpy.data.objects[target_name_old].hide_render = True #レンダリングしない
             
         bpy.data.objects[target_name_old].name = target_name #対象オブジェクトを改名
         collection = bpy.data.collections[collection_name] #コレクションを取得
