@@ -113,17 +113,12 @@ class TransformAssistPanel(bpy.types.Panel):
         col1 = layout.column(align=True)
         col2 = layout.column(align=True)
         box_grab_mode = col1.box()
-        box_sec_1 = col2.box()
         box_grab_dir = col2.box()
         row_grab_dir = box_grab_dir.row(align=True)
 
         box_grab_mode.prop(scene.grab_pro, "enabled", text="モードを有効にする")
-        box_sec_1.prop(scene.grab_pro, "slide", text="エッジスライドを有効にする")
 
-        row_grab_dir.prop(scene.grab_pro, "dir_x")
-        row_grab_dir.prop(scene.grab_pro, "dir_y")
-        row_grab_dir.prop(scene.grab_pro, "dir_z")
-        box_sec_1.prop(scene.grab_pro, "multi")
+        row_grab_dir.prop(scene.grab_pro, "dir", expand=True)  
 
         layout.label(text="回転軸", icon="EVENT_R")
         layout.row()
@@ -131,16 +126,25 @@ class TransformAssistPanel(bpy.types.Panel):
         col3 = layout.column(align=True)
         col4 = layout.column(align=True)
         box_rotate_mode = col3.box()
-        box_sec_2 = col4.box()
         box_rotate_dir = col4.box()
         row_rotate_dir = box_rotate_dir.row(align=True)
 
         box_rotate_mode.prop(scene.rotate_pro, "enabled", text="モードを有効にする")
 
-        row_rotate_dir.prop(scene.rotate_pro, "dir_x")  
-        row_rotate_dir.prop(scene.rotate_pro, "dir_y")
-        row_rotate_dir.prop(scene.rotate_pro, "dir_z")
-        box_sec_2.prop(scene.rotate_pro, "multi")
+        row_rotate_dir.prop(scene.rotate_pro, "dir", expand=True)  
+        
+        layout.label(text="スケール軸", icon="EVENT_S")
+        layout.row()
+
+        col5 = layout.column(align=True)
+        col6 = layout.column(align=True)
+        box_resize_mode = col5.box()
+        box_resize_dir = col6.box()
+        row_resize_dir = box_resize_dir.row(align=True)
+
+        box_resize_mode.prop(scene.resize_pro, "enabled", text="モードを有効にする")
+
+        row_resize_dir.prop(scene.resize_pro, "dir", expand=True)  
 
         if scene.grab_pro.enabled:
             col2.enabled = True
@@ -150,6 +154,10 @@ class TransformAssistPanel(bpy.types.Panel):
             col4.enabled = True
         else:
             col4.enabled = False
+        if scene.resize_pro.enabled:
+            col6.enabled = True
+        else:
+            col6.enabled = False
 
 class TextSenderPanel(bpy.types.Panel):
     bl_idname = "MMZ_PT_Textsender"
@@ -180,9 +188,9 @@ class TextSenderPanel(bpy.types.Panel):
         layout.prop(scene.textsender, "line_mode", expand=True)
         layout.operator("mmz.textsender_operator", text="追加する")
 
-class TextRemeshPanel(bpy.types.Panel):
-    bl_idname = "MMZ_PT_Textremesh"
-    bl_label = "テキストリメッシュ"
+class ToolsPanel(bpy.types.Panel):
+    bl_idname = "MMZ_PT_Tools"
+    bl_label = "ツール"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "MMZ"
@@ -191,55 +199,13 @@ class TextRemeshPanel(bpy.types.Panel):
         layout = self.layout
         scene = context.scene
         
-        layout.label(text="リメッシュを適用するため処理に時間がかかります。")
-        if bpy.context.selected_objects:
-            text_count = 0
-            for obj in bpy.context.selected_objects:
-                if obj.type == "FONT":
-                    text_count = text_count + 1
-            if text_count == len(bpy.context.selected_objects):
-                layout.operator("mmz.textremesh_operator", text="テキストをリメッシュする")
-                layout.label(text="")
-            else:
-                if text_count >= 1:
-                    row = layout.row(align=False)
-                    row.alert=False
-                    row.operator("mmz.textremesh_operator", text="テキストをリメッシュする")
-                    layout.label(text="注意:テキストオブジェクト以外が選択されています。")
-                else:
-                    row = layout.row(align=False)
-                    row.enabled = False
-                    row.operator("mmz.textremesh_operator", text="テキストをリメッシュする")
-                    layout.label(text="注意:テキストオブジェクトが選択されていません。")
+        row1 = layout.row()
+        row2 = layout.row()
+        row1.operator("mmz.textremesh_operator", text="テキストリメッシュ")
+        row1.operator("mmz.getmiddlepoint_operator", text="原点移動")
+        row2.operator("mmz.wireframeswitch_operator", text="表示切替")
+        row2.operator("mmz.applymodifier_operator", text="モディファイアを適用")
 
-        else:
-            row = layout.row(align=False)
-            row.enabled = False
-            row.operator("mmz.textremesh_operator", text="テキストをリメッシュする")
-            layout.label(text="注意:オブジェクトが選択されていません。")
-
-class GetMiddlePointPanel(bpy.types.Panel):
-    bl_idname = "MMZ_PT_GetMiddlePoint"
-    bl_label = "原点を決定"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_category = "MMZ"
-
-    def draw(self, context):
-        layout = self.layout
-        scene = context.scene
-        
-        row = layout.row()
-
-        layout.row()
-        active_obj = bpy.context.active_object
-        if active_obj and active_obj.type == "MESH":
-            row.enabled = True
-        else:
-            row.enabled = False
-            layout.label(text="注意:アクティブオブジェクトがメッシュじゃないです。")
-            
-        row.operator("mmz.getmiddlepoint_operator", text="選択した中点に原点を移動(語彙力)")
 
 class AddBooleanPanel(bpy.types.Panel):
     bl_idname = "MMZ_PT_AddBoolean"
@@ -280,65 +246,6 @@ class AddBooleanPanel(bpy.types.Panel):
             col.enabled = False
             col.label(text="メッシュオブジェクトを2つ選択してください。")
         
-class WireFrameSwitchPanel(bpy.types.Panel):
-    bl_idname = "MMZ_PT_WireFrameSwitch"
-    bl_label = "ワイヤーフレーム切り替え"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_category = "MMZ"
-
-    def draw(self, context):
-        layout = self.layout
-        scene = context.scene
-
-        col = layout.column(align=True)
-
-        col.operator("mmz.wireframeswitch_operator", text="ワイヤーフレーム/テクスチャ切り替え")
-        
-        if not len(bpy.context.selected_objects) == 0:
-            col.enabled = True
-        else:
-            col.enabled = False
-
-
-
-class ApplyAllModifierPanel(bpy.types.Panel):
-    bl_idname = "MMZ_PT_ApplyAllModifier"
-    bl_label = "モディファイアを適用"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_category = "MMZ"
-
-    def draw(self, context):
-        layout = self.layout
-        scene = context.scene
-
-        row = layout.row()
-
-        selected_obj = bpy.context.selected_objects
-
-        if selected_obj:
-            mesh_count = 0
-            for obj in selected_obj:
-                if obj.type == "MESH":
-                    mesh_count = mesh_count + 1
-            if mesh_count == len(selected_obj):
-                layout.operator("mmz.applymodifier_operator", text="モディファイアを適用する")
-                layout.label(text="")
-            else:
-                if mesh_count >= 1:
-                    row.enabled = True
-                    row.operator("mmz.applymodifier_operator", text="モディファイアを適用する")
-                    layout.label(text="注意:メッシュオブジェクト以外が選択されています。")
-                else:
-                    row.enabled = False
-                    row.operator("mmz.applymodifier_operator", text="モディファイアを適用する")
-                    layout.label(text="注意:メッシュオブジェクトが選択されていません。")
-
-        else:
-            row.enabled = False
-            row.operator("mmz.applymodifier_operator", text="モディファイアを適用する")
-            layout.label(text="注意:オブジェクトが選択されていません。")
 
 class ChangeResolutionPanel(bpy.types.Panel):
     bl_idname = "MMZ_PT_ChangeResolution"
@@ -409,10 +316,7 @@ def register_classes():
     classes = [
         TransformAssistPanel,
         TextSenderPanel,
-        TextRemeshPanel,
-        GetMiddlePointPanel,
-        WireFrameSwitchPanel,
-        ApplyAllModifierPanel,
+        ToolsPanel,
         AddBooleanPanel,
         ChangeResolutionPanel
     ]

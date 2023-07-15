@@ -40,14 +40,31 @@ class OverrideOperator(bpy.types.Operator):
                         km.keymap_items.remove(kmi)
                 addon_keymaps.clear()
 
+    def resize_register(self, context):
+        if bpy.context.scene.resize_pro.enabled:
+            wm = bpy.context.window_manager
+            kc = wm.keyconfigs.addon
+            if kc:
+                km = kc.keymaps.new(name="3D View", space_type="VIEW_3D")
+                kmi = km.keymap_items.new("mmz.resizeassist_operator", "S", "PRESS")
+                addon_keymaps.append((km, kmi))
+        else:
+            wm = bpy.context.window_manager
+            kc = wm.keyconfigs.addon
+            if kc:
+                for km, kmi in addon_keymaps:
+                    if kmi.idname == "mmz.resizeassist_operator":
+                        km.keymap_items.remove(kmi)
+                addon_keymaps.clear()
+
 def register():
     global addon_keymaps
     addon_keymaps = []
     wm = bpy.context.window_manager
     kc = wm.keyconfigs.addon
     if kc:
-        km = kc.keymaps.new(name="Window", space_type="EMPTY")
-        kmi = km.keymap_items.new("mmz.addonmenu_piemenu_call", "F5", "PRESS")
+        km = kc.keymaps.new(name="3D View", space_type="VIEW_3D")
+        kmi = km.keymap_items.new("mmz.addonmenu_piemenu_call", "X", "PRESS", alt=True)
         addon_keymaps.append((km, kmi))
 
 

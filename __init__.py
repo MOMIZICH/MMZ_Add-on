@@ -26,14 +26,11 @@ if "bpy" in locals():
 
 #from .func_panels import AutomergePanel
 #from .func_panels import ExtrudeCancelPanel
-from .operators.transformassist import GrabAssistOperator
-from .operators.transformassist import RotateAssistOperator
-from .operators.textsender import TextSenderOperator
-from .operators.textsender import GetPreviousTextOperator
+from .operators.transformassist import *
+from .operators.textsender import *
 #from .resolution import ChangeResolutionOperator
 from .preferences.shortcuts import OverrideOperator
-from .panels.piemenu import MMZ_MT_AddonMenu
-from .panels.piemenu import AddonPieMenu_Call
+from .panels.piemenu import *
 #from .automerge import AutoMergeOperator
 from .operators.textremesh import TextRemeshOperator
 #from .extrudecancel import ExtrudeCancelOperator
@@ -48,6 +45,7 @@ classes = [
     TextRemeshOperator,
     GrabAssistOperator,
     RotateAssistOperator,
+    ResizeAssistOperator,
     TextSenderOperator,
     GetPreviousTextOperator,
     OverrideOperator,

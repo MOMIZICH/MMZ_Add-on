@@ -73,10 +73,13 @@ class ApplyAllModifierOperator(bpy.types.Operator):
     def execute(self, context):
         print("MMZ Add-on: ApplyAllModifier: running.")
 
-        for obj in bpy.context.selected_objects:
-            if obj.modifiers and obj.type == "MESH":
-                for mod in obj.modifiers:
-                    bpy.ops.object.modifier_apply(modifier=mod.name)
+        selected_obj = bpy.context.selected_objects
+        
+        if selected_obj:
+            for obj in selected_obj:
+                if obj.modifiers and obj.type == "MESH":
+                    for mod in obj.modifiers:
+                        bpy.ops.object.modifier_apply(modifier=mod.name)
 
         return{"FINISHED"}
     
@@ -143,11 +146,12 @@ class WireFrameSwitchOperator(bpy.types.Operator):
         print("MMZ Add-on: WireFrameSwitch: running.")
 
         selected_obj = bpy.context.selected_objects
-        for obj in selected_obj:
-            if obj.display_type == "WIRE":
-                obj.display_type = "TEXTURED"
-            else:
-                obj.display_type = "WIRE"
+        if selected_obj:
+            for obj in selected_obj:
+                if obj.display_type == "WIRE":
+                    obj.display_type = "TEXTURED"
+                else:
+                    obj.display_type = "WIRE"
 
         return{"FINISHED"}
 

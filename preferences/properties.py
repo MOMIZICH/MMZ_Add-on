@@ -19,148 +19,18 @@ class GrabAssistProperties(bpy.types.PropertyGroup):
 
     print("MMZ Add-on: Properties: GrabAssist: Registered.")
 
-    condition = {"latest": "x", "oldest": "x", "busy": False}
 
     def update_enabled(self, context):
         OverrideOperator.grab_register(self, context)
     
-    def update_multi(self, context):
-        x = bpy.context.scene.grab_pro.dir_x
-        y = bpy.context.scene.grab_pro.dir_y
-        z = bpy.context.scene.grab_pro.dir_z
-        if not bpy.context.scene.grab_pro.multi:
-            if [x, y, z].count(True) == 2:
-                condition = self.condition
-                latest = condition["latest"]
-                def enable_x(self, context):
-                    print("enableX")
-                    bpy.context.scene.grab_pro.dir_x = True
-                    bpy.context.scene.grab_pro.dir_y = False
-                    bpy.context.scene.grab_pro.dir_z = False
-                    condition["oldest"] = "x"
-                    condition["latest"] = "x"
-                def enable_y(self, context):
-                    print("enableY")
-                    bpy.context.scene.grab_pro.dir_x = False
-                    bpy.context.scene.grab_pro.dir_y = True
-                    bpy.context.scene.grab_pro.dir_z = False
-                    condition["oldest"] = "y"
-                    condition["latest"] = "y"
-                def enable_z(self, context):
-                    print("enableZ")
-                    bpy.context.scene.grab_pro.dir_x = False
-                    bpy.context.scene.grab_pro.dir_y = False
-                    bpy.context.scene.grab_pro.dir_z = True
-                    condition["oldest"] = "z"
-                    condition["latest"] = "z"
-                if latest == "x": enable_x(self, context)
-                if latest == "y": enable_y(self, context)
-                if latest == "z": enable_z(self, context)
-    
-    def update_dir(self, context):
-         
-        condition = self.condition
-        latest = condition["latest"]
-        oldest = condition["oldest"]
-        busy = condition["busy"]
-        
-        if not busy:
-            condition["busy"] = True
-
-            x = bpy.context.scene.grab_pro.dir_x
-            y = bpy.context.scene.grab_pro.dir_y
-            z = bpy.context.scene.grab_pro.dir_z
-
-            count = [x, y, z].count(True) #それぞれの軸のチェックが入っているか
-            if count == 1:  # 軸が一つだけ選択されているとき
-                if x == True:  # 選択されているのがX軸なら
-                    condition["oldest"] = "x"  # latestとoldestをxに設定(以下同じ)
-                    condition["latest"] = "x"
-                if y == True:
-                    condition["oldest"] = "y"
-                    condition["latest"] = "y"
-                if z == True:
-                    condition["oldest"] = "z"
-                    condition["latest"] = "z"
-            if count >= 2:
-                if bpy.context.scene.grab_pro.multi:
-                    if count == 2:  # 軸が二つ選択されているとき
-                        if x and not oldest == "x":  # X軸が選択されていてoldestでないなら(=新しく選択された)
-                            condition["latest"] = "x"  # latestをxに設定(以下同じ)
-                        if y and not oldest == "y":
-                            condition["latest"] = "y"
-                        if z and not oldest == "z":
-                            condition["latest"] = "z"
-                    elif count == 3:  # 軸が3つとも選択されているとき
-                        if oldest == "x":  # oldestがxなら(=最初に選択されたのがX軸なら)
-                            bpy.context.scene.grab_pro.dir_x = False  # X軸のチェックを解除する(以下同じ)
-                            if latest == "y":  # latestがyなら(2つ目に選択されたのがyなら)
-                                condition["latest"] = "z"  # zをlatestに設定
-                                condition["oldest"] = "y"  # yをoldestに設定(以下同じ)
-                            elif latest == "z":
-                                condition["latest"] = "y"
-                                condition["oldest"] = "z"
-                        elif oldest == "y":
-                            bpy.context.scene.grab_pro.dir_y = False
-                            if latest == "x":
-                                condition["latest"] = "z"
-                                condition["oldest"] = "x"
-                            elif latest == "z":
-                                condition["latest"] = "x"
-                                condition["oldest"] = "z"
-                        elif oldest == "z":
-                            bpy.context.scene.grab_pro.dir_z = False
-                            if latest == "x":
-                                condition["latest"] = "y"
-                                condition["oldest"] = "x"
-                            elif latest == "y":
-                                condition["latest"] = "x"
-                                condition["oldest"] = "y"
-                else:
-                    def enable_x(self, context):
-                        print("enableX")
-                        bpy.context.scene.grab_pro.dir_x = True
-                        bpy.context.scene.grab_pro.dir_y = False
-                        bpy.context.scene.grab_pro.dir_z = False
-                        condition["oldest"] = "x"
-                        condition["latest"] = "x"
-                    def enable_y(self, context):
-                        print("enableY")
-                        bpy.context.scene.grab_pro.dir_x = False
-                        bpy.context.scene.grab_pro.dir_y = True
-                        bpy.context.scene.grab_pro.dir_z = False
-                        condition["oldest"] = "y"
-                        condition["latest"] = "y"
-                    def enable_z(self, context):
-                        print("enableZ")
-                        bpy.context.scene.grab_pro.dir_x = False
-                        bpy.context.scene.grab_pro.dir_y = False
-                        bpy.context.scene.grab_pro.dir_z = True
-                        condition["oldest"] = "z"
-                        condition["latest"] = "z"
-                    if not latest == "x" and x: enable_x(self, context)
-                    elif not latest == "y" and y: enable_y(self, context)
-                    elif not latest == "z" and z: enable_z(self, context)
-                            
-            condition["busy"] = False
-
-    dir_x: bpy.props.BoolProperty(
-        name="X軸",
-        description="X軸方向への移動",
-        default=False,
-        update=update_dir
-    )
-    dir_y: bpy.props.BoolProperty(
-        name="Y軸",
-        description="Y軸方向への移動",
-        default=False,
-        update=update_dir
-    )
-    dir_z: bpy.props.BoolProperty(
-        name="Z軸",
-        description="Z軸方向への移動",
-        default=False,
-        update=update_dir
+    dir: bpy.props.EnumProperty(
+        name="軸",
+        items=[
+            ("x", "X軸", "X軸を有効にする"),
+            ("y", "Y軸", "Y軸を有効にする"),
+            ("z", "Z軸", "Z軸を有効にする"),
+        ],
+        options={"ENUM_FLAG"}
     )
 
     enabled: bpy.props.BoolProperty(
@@ -185,7 +55,6 @@ class GrabAssistProperties(bpy.types.PropertyGroup):
         name="複数軸",
         description="複数の軸を選択できるかを示します。",
         default=True,
-        update=update_multi
     )
 
 class RotateAssistProperties(bpy.types.PropertyGroup):
@@ -194,136 +63,17 @@ class RotateAssistProperties(bpy.types.PropertyGroup):
 
     print("MMZ Add-on: Properties: RotateAssist: Registered.")
 
-    condition = {"latest": "x", "oldest": "x", "busy": False}
-
     def update_enabled(self, context):
         OverrideOperator.rotate_register(self, context)
     
-    def update_multi(self, context):
-        x = bpy.context.scene.rotate_pro.dir_x
-        y = bpy.context.scene.rotate_pro.dir_y
-        z = bpy.context.scene.rotate_pro.dir_z
-        if not bpy.context.scene.rotate_pro.multi:
-            if [x, y, z].count(True) == 2:
-                if x and y:
-                    bpy.context.scene.rotate_pro.dir_x = False
-                    bpy.context.scene.rotate_pro.dir_y = False
-                    bpy.context.scene.rotate_pro.dir_z = True
-                if x and z:
-                    bpy.context.scene.rotate_pro.dir_x = False
-                    bpy.context.scene.rotate_pro.dir_y = True
-                    bpy.context.scene.rotate_pro.dir_z = False
-                if y and z:
-                    bpy.context.scene.rotate_pro.dir_x = True
-                    bpy.context.scene.rotate_pro.dir_y = False
-                    bpy.context.scene.rotate_pro.dir_z = False
-
-    def update_dir(self, context):         
-        condition = self.condition
-        latest = condition["latest"]
-        oldest = condition["oldest"]
-        busy = condition["busy"]
-        
-        if not busy:
-            condition["busy"] = True
-
-            x = bpy.context.scene.rotate_pro.dir_x
-            y = bpy.context.scene.rotate_pro.dir_y
-            z = bpy.context.scene.rotate_pro.dir_z
-
-            count = [x, y, z].count(True) #それぞれの軸のチェックが入っているか
-            if count == 1:  # 軸が一つだけ選択されているとき
-                if x == True:  # 選択されているのがX軸なら
-                    condition["oldest"] = "x"  # latestとoldestをxに設定(以下同じ)
-                    condition["latest"] = "x"
-                if y == True:
-                    condition["oldest"] = "y"
-                    condition["latest"] = "y"
-                if z == True:
-                    condition["oldest"] = "z"
-                    condition["latest"] = "z"
-                latest = condition["latest"]
-                oldest = condition["oldest"]
-            
-            if count >= 2:
-                if bpy.context.scene.rotate_pro.multi:
-                    if count == 2:  # 軸が二つ選択されているとき
-                        if x and not oldest == "x":  # X軸が選択されていてoldestでないなら(=新しく選択された)
-                            condition["latest"] = "x"  # latestをxに設定(以下同じ)
-                        if y and not oldest == "y":
-                            condition["latest"] = "y"
-                        if z and not oldest == "z":
-                            condition["latest"] = "z"
-                    elif count == 3:  # 軸が3つとも選択されているとき
-                        if oldest == "x":  # oldestがxなら(=最初に選択されたのがX軸なら)
-                            bpy.context.scene.rotate_pro.dir_x = False  # X軸のチェックを解除する(以下同じ)
-                            if latest == "y":  # latestがyなら(2つ目に選択されたのがyなら)
-                                condition["latest"] = "z"  # zをlatestに設定
-                                condition["oldest"] = "y"  # yをoldestに設定(以下同じ)
-                            elif latest == "z":
-                                condition["latest"] = "y"
-                                condition["oldest"] = "z"
-                        elif oldest == "y":
-                            bpy.context.scene.rotate_pro.dir_y = False
-                            if latest == "x":
-                                condition["latest"] = "z"
-                                condition["oldest"] = "x"
-                            elif latest == "z":
-                                condition["latest"] = "x"
-                                condition["oldest"] = "z"
-                        elif oldest == "z":
-                            bpy.context.scene.rotate_pro.dir_z = False
-                            if latest == "x":
-                                condition["latest"] = "y"
-                                condition["oldest"] = "x"
-                            elif latest == "y":
-                                condition["latest"] = "x"
-                                condition["oldest"] = "y"
-                else:
-                    def enable_x(self, context):
-                        print("enableX")
-                        bpy.context.scene.rotate_pro.dir_x = True
-                        bpy.context.scene.rotate_pro.dir_y = False
-                        bpy.context.scene.rotate_pro.dir_z = False
-                        condition["oldest"] = "x"
-                        condition["latest"] = "x"
-                    def enable_y(self, context):
-                        print("enableY")
-                        bpy.context.scene.rotate_pro.dir_x = False
-                        bpy.context.scene.rotate_pro.dir_y = True
-                        bpy.context.scene.rotate_pro.dir_z = False
-                        condition["oldest"] = "y"
-                        condition["latest"] = "y"
-                    def enable_z(self, context):
-                        print("enableZ")
-                        bpy.context.scene.rotate_pro.dir_x = False
-                        bpy.context.scene.rotate_pro.dir_y = False
-                        bpy.context.scene.rotate_pro.dir_z = True
-                        condition["oldest"] = "z"
-                        condition["latest"] = "z"
-                    if not latest == "x" and x: enable_x(self, context)
-                    elif not latest == "y" and y: enable_y(self, context)
-                    elif not latest == "z" and z: enable_z(self, context)
-                        
-            condition["busy"] = False
-
-    dir_x: bpy.props.BoolProperty(
-        name="X軸",
-        description="X軸方向への移動",
-        default=False,
-        update=update_dir
-    )
-    dir_y: bpy.props.BoolProperty(
-        name="Y軸",
-        description="Y軸方向への移動",
-        default=False,
-        update=update_dir
-    )
-    dir_z: bpy.props.BoolProperty(
-        name="Z軸",
-        description="Z軸方向への移動",
-        default=False,
-        update=update_dir
+    dir: bpy.props.EnumProperty(
+        name="軸",
+        items=[
+            ("x", "X軸", "X軸を有効にする"),
+            ("y", "Y軸", "Y軸を有効にする"),
+            ("z", "Z軸", "Z軸を有効にする"),
+        ],
+        options={"ENUM_FLAG"}
     )
 
     enabled: bpy.props.BoolProperty(
@@ -331,12 +81,6 @@ class RotateAssistProperties(bpy.types.PropertyGroup):
         description="モードが有効であるかを示します。",
         default=False,
         update=update_enabled
-    )
-
-    slide: bpy.props.BoolProperty(
-        name="エッジスライドが有効かを表す",
-        description="エッジスライド機能を有効にするかを表します。",
-        default=False
     )
 
     extend: bpy.props.BoolProperty(
@@ -348,8 +92,40 @@ class RotateAssistProperties(bpy.types.PropertyGroup):
         name="複数軸",
         description="複数の軸を選択できるかを示します。",
         default=False,
-        update=update_multi
     )
+
+class ResizeAssistProperties(bpy.types.PropertyGroup):
+    bl_idname = "MMZ_PT_ResizeAssist"
+    bl_label = "MMZ Add-on ResizeAssist Properties"
+
+    print("MMZ Add-on: Properties: ResizeAssist: Registered.")
+
+    def update_enabled(self, context):
+        OverrideOperator.resize_register(self, context)
+
+    dir: bpy.props.EnumProperty(
+        name="軸",
+        items=[
+            ("x", "X軸", "X軸を有効にする"),
+            ("y", "Y軸", "Y軸を有効にする"),
+            ("z", "Z軸", "Z軸を有効にする"),
+        ],
+        options={"ENUM_FLAG"}
+    )
+
+    enabled: bpy.props.BoolProperty(
+        name="モードが有効かを表す",
+        description="モードが有効であるかを示します。",
+        default=False,
+        update=update_enabled
+    )
+
+    multi: bpy.props.BoolProperty(
+        name="複数軸",
+        description="複数の軸を選択できるかを示します。",
+        default=True,
+    )
+
 
 class TextSenderProperties(bpy.types.PropertyGroup):
     bl_idname = "MMZ_PT_RotateAssist"
@@ -488,6 +264,7 @@ def register_classes():
         MMZAddonProperties,
         GrabAssistProperties,
         RotateAssistProperties,
+        ResizeAssistProperties,
         TextSenderProperties,
         ChangeResolutionProperties,
         AddBooleanProperties
@@ -502,6 +279,7 @@ def register():
     bpy.types.Scene.mmz_properties = bpy.props.PointerProperty(type=MMZAddonProperties)
     bpy.types.Scene.grab_pro = bpy.props.PointerProperty(type=GrabAssistProperties)
     bpy.types.Scene.rotate_pro = bpy.props.PointerProperty(type=RotateAssistProperties)
+    bpy.types.Scene.resize_pro = bpy.props.PointerProperty(type=ResizeAssistProperties)
     bpy.types.Scene.textsender = bpy.props.PointerProperty(type=TextSenderProperties)
     bpy.types.Scene.change_resolution = bpy.props.PointerProperty(type=ChangeResolutionProperties)
     bpy.types.Scene.addbool = bpy.props.PointerProperty(type=AddBooleanProperties)
