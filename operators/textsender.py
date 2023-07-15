@@ -17,6 +17,16 @@ class TextSenderOperator(bpy.types.Operator):
         active_obj = bpy.context.active_object
         text = bpy.context.scene.textsender.text
         if active_obj: #アクティブオブジェクトが選択されていたら
+
+            used_mode = context.object.mode
+            if used_mode == "EDIT":
+                bpy.ops.object.mode_set(mode = "OBJECT")
+            elif used_mode == "OBJECT":
+                pass
+            else:
+                print("MMZ Add-on: TextRemesh: Error: Unavailable Mode.")
+                return{"CANCELLED"}
+
             if not active_obj.type == "FONT": #アクティブオブジェクトがテキストオブジェクトでないなら
                 bpy.ops.object.text_add() #テキストオブジェクトを追加する
                 active_obj = bpy.context.active_object #テキストオブジェクトをactive_objに取得
@@ -36,6 +46,9 @@ class TextSenderOperator(bpy.types.Operator):
             active_obj.data.body = text
 
         bpy.context.scene.textsender.text = "" #textプロパティを空にする
+
+        if used_mode == "EDIT":
+            bpy.ops.object.mode_set(mode = "EDIT")
                 
         return{"FINISHED"}
     
