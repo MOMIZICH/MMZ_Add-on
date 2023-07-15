@@ -4,7 +4,7 @@ import datetime
 bl_info = {
     "name": "MMZ Add-on",
     "author": "MOMIZI",
-    "version": (1, 0),
+    "version": (1, 0, 4),
     "blender": (3, 6, 0),
     "location": "View3D > Tools > MMZ Add-on",
     "description": "機能詰め合わせ",
