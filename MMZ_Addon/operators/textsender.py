@@ -3,6 +3,7 @@ import bpy
 class TextSenderOperator(bpy.types.Operator):
     bl_idname = "mmz.textsender_operator"
     bl_label = "Text Sender Operator"
+    bl_description = "テキストを追加します"
     bl_options = {"REGISTER", "UNDO"}
 
     print("MMZ Add-on: TextSender: loaded.")

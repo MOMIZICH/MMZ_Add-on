@@ -3,6 +3,7 @@ import bpy
 class TextRemeshOperator(bpy.types.Operator):
     bl_idname = "mmz.textremesh_operator"
     bl_label = "Text Remesh Operator"
+    bl_description = "テキストを選択して実行するとメッシュに変換します"
     bl_options = {"REGISTER", "UNDO"}
 
     print("MMZ Add-on: TextRemesh: loaded.")

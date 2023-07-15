@@ -2,9 +2,10 @@ import bpy
 import mathutils
 
 
-class GetMiddlePointOperator(bpy.types.Operator):
-    bl_idname = "mmz.getmiddlepoint_operator"
-    bl_label = "Get Middle Point Operator"
+class GetMiddleToOriginOperator(bpy.types.Operator):
+    bl_idname = "mmz.getmiddletoorigin_operator"
+    bl_label = "Get Middle to Origin Operator"
+    bl_description = "選択されている頂点を原点に設定します。複数の頂点が選択されている場合はそれらの中点を原点にします"
     bl_options = {"REGISTER", "UNDO"}
 
     print("MMZ Add-on: GetMiddlePoint: loaded.")
@@ -66,6 +67,7 @@ class GetMiddlePointOperator(bpy.types.Operator):
 class ApplyAllModifierOperator(bpy.types.Operator):
     bl_idname = "mmz.applymodifier_operator"
     bl_label = "Apply All Modifier Operator"
+    bl_description = "メッシュオブジェクトのモディファイアーをすべて適用します。"
     bl_options = {"REGISTER", "UNDO"}
 
     print("MMZ Add-on: ApplyAllModifier: loaded.")
@@ -86,6 +88,7 @@ class ApplyAllModifierOperator(bpy.types.Operator):
 class AddBooleanOperator(bpy.types.Operator):
     bl_idname = "mmz.addboolean_operator"
     bl_label = "Add Buolean Operator"
+    bl_description = "アクティブオブジェクトにブーリアンモディファイアーを追加し、もう一方を演算対象に指定します。"
     bl_options = {"REGISTER", "UNDO"}
 
     print("MMZ Add-on: AddBoolean: loaded.")
@@ -138,6 +141,7 @@ class AddBooleanOperator(bpy.types.Operator):
 class WireFrameSwitchOperator(bpy.types.Operator):
     bl_idname = "mmz.wireframeswitch_operator"
     bl_label = "Wire Frame Switch Operator"
+    bl_description = "ワイヤーフレーム表示とテクスチャ表示を切り替えます。それ以外だった場合はワイヤーフレームになります。"
     bl_options = {"REGISTER", "UNDO"}
 
     print("MMZ Add-on: WireFrameSwitch: loaded.")
@@ -159,7 +163,7 @@ class WireFrameSwitchOperator(bpy.types.Operator):
 
 def register_classes():
     classes = [
-        GetMiddlePointOperator,
+        GetMiddleToOriginOperator,
         ApplyAllModifierOperator,
         AddBooleanOperator,
         WireFrameSwitchOperator

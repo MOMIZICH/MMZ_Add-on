@@ -146,8 +146,8 @@ class TextSenderProperties(bpy.types.PropertyGroup):
     line_mode: bpy.props.EnumProperty(
         name="モード",
         items=[
-            ("add", "追加/上書きモード", "上書きします。"),
-            ("new_line", "改行モード", "改行します。"),
+            ("add", "追加/上書きモード", "追加またはテキストオブジェクトが選択されている場合上書きします。"),
+            ("new_line", "改行モード", "文字がすでに存在する場合、入力された文字を改行して追加します。"),
         ],
         default="add"
     )

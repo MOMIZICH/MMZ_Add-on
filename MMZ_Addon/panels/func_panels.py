@@ -186,7 +186,7 @@ class TextSenderPanel(bpy.types.Panel):
             row.enabled = False #ボタンを無効にする
         row.operator("mmz.getprevioustext_operator", text="文字を取得する")
         layout.prop(scene.textsender, "line_mode", expand=True)
-        layout.operator("mmz.textsender_operator", text="追加する")
+        layout.operator("mmz.textsender_operator", text="追加する", icon="FILE_TEXT")
 
 class ToolsPanel(bpy.types.Panel):
     bl_idname = "MMZ_PT_Tools"
@@ -201,10 +201,10 @@ class ToolsPanel(bpy.types.Panel):
         
         row1 = layout.row()
         row2 = layout.row()
-        row1.operator("mmz.textremesh_operator", text="テキストリメッシュ")
-        row1.operator("mmz.getmiddlepoint_operator", text="原点移動")
-        row2.operator("mmz.wireframeswitch_operator", text="表示切替")
-        row2.operator("mmz.applymodifier_operator", text="モディファイアを適用")
+        row1.operator("mmz.textremesh_operator", text="テキストリメッシュ", icon="FILE_TEXT")
+        row1.operator("mmz.getmiddletoorigin_operator", text="原点移動", icon="TRANSFORM_ORIGINS")
+        row2.operator("mmz.wireframeswitch_operator", text="表示切替", icon="MOD_WIREFRAME")
+        row2.operator("mmz.applymodifier_operator", text="モディファイアを適用", icon="MODIFIER")
 
 
 class AddBooleanPanel(bpy.types.Panel):
@@ -223,7 +223,7 @@ class AddBooleanPanel(bpy.types.Panel):
         
         col.label(text="ちょっとバグが残ってるかもなので重ねがけするときは注意！")
         row.prop(scene.addbool, "mode", expand=True)
-        col.operator("mmz.addboolean_operator", text="ブーリアンを追加")
+        col.operator("mmz.addboolean_operator", text="ブーリアンを追加", icon="MOD_BOOLEAN")
 
         selected_obj = bpy.context.selected_objects
         active_obj = bpy.context.active_object
@@ -277,7 +277,7 @@ class ChangeResolutionPanel(bpy.types.Panel):
         
         row.prop(scene.change_resolution, "enable", text="設定を有効にする")
 
-        col1.label(text="レンダリングエンジン", icon="RENDERLAYERS")
+        col1.label(text="レンダリングエンジン", icon="RENDER_STILL")
         col1.prop(scene.change_resolution, "render_engine_enabled")
         row1.prop(scene.change_resolution, "render_engine", expand=True)
 
@@ -285,7 +285,7 @@ class ChangeResolutionPanel(bpy.types.Panel):
         col2.prop(scene.change_resolution, "frame_rate_enabled")
         row2.prop(scene.change_resolution, "frame_rate", expand=True)
         
-        col3.label(text="解像度", icon="RENDERLAYERS")
+        col3.label(text="解像度", icon="FULLSCREEN_ENTER")
         col3.prop(scene.change_resolution, "resolution_enabled")
         row3.prop(scene.change_resolution, "resolution", expand=True)
 
@@ -294,17 +294,17 @@ class ChangeResolutionPanel(bpy.types.Panel):
             box2.enabled = True
             box3.enabled = True
             if scene.change_resolution.render_engine_enabled:
-                box1.enabled = True
+                row1.enabled = True
             else:
-                box1.enabled = False
+                row1.enabled = False
             if scene.change_resolution.frame_rate_enabled:
-                box2.enabled = True
+                row2.enabled = True
             else:
-                box2.enabled = False
+                row2.enabled = False
             if scene.change_resolution.resolution_enabled:
-                box3.enabled = True
+                row3.enabled = True
             else:
-                box3.enabled = False
+                row3.enabled = False
         else:
             box1.enabled = False
             box2.enabled = False
