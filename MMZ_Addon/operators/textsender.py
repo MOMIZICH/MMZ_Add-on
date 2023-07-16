@@ -40,7 +40,7 @@ class TextSenderOperator(bpy.types.Operator):
         if bpy.context.scene.textsender.line_mode == "new_line": #改行モードが有効なら
             previous = active_obj.data.body #テキストオブジェクトの文字を取得する
             if previous: #文字があったら
-                active_obj.data.body = previous + f"\n" + text #改行して追加する
+                active_obj.data.body = previous + "\n" + text #改行して追加する
             else: #なければ
                 active_obj.data.body = text #そのまま追加する
         else:

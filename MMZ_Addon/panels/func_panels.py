@@ -110,54 +110,51 @@ class TransformAssistPanel(bpy.types.Panel):
         layout.label(text="移動軸", icon="EVENT_G")
         layout.row()
 
-        col1 = layout.column(align=True)
-        col2 = layout.column(align=True)
+        col1 = layout.row(align=True)
         box_grab_mode = col1.box()
-        box_grab_dir = col2.box()
+        box_grab_dir = col1.box()
         row_grab_dir = box_grab_dir.row(align=True)
 
-        box_grab_mode.prop(scene.grab_pro, "enabled", text="モードを有効にする")
+        box_grab_mode.prop(scene.grab_pro, "enabled", text="有効")
 
         row_grab_dir.prop(scene.grab_pro, "dir", expand=True)  
 
         layout.label(text="回転軸", icon="EVENT_R")
         layout.row()
         
-        col3 = layout.column(align=True)
-        col4 = layout.column(align=True)
-        box_rotate_mode = col3.box()
-        box_rotate_dir = col4.box()
+        col2 = layout.row(align=True)
+        box_rotate_mode = col2.box()
+        box_rotate_dir = col2.box()
         row_rotate_dir = box_rotate_dir.row(align=True)
 
-        box_rotate_mode.prop(scene.rotate_pro, "enabled", text="モードを有効にする")
+        box_rotate_mode.prop(scene.rotate_pro, "enabled", text="有効")
 
         row_rotate_dir.prop(scene.rotate_pro, "dir", expand=True)  
         
         layout.label(text="スケール軸", icon="EVENT_S")
         layout.row()
 
-        col5 = layout.column(align=True)
-        col6 = layout.column(align=True)
-        box_resize_mode = col5.box()
-        box_resize_dir = col6.box()
+        col3 = layout.row(align=True)
+        box_resize_mode = col3.box()
+        box_resize_dir = col3.box()
         row_resize_dir = box_resize_dir.row(align=True)
 
-        box_resize_mode.prop(scene.resize_pro, "enabled", text="モードを有効にする")
+        box_resize_mode.prop(scene.resize_pro, "enabled", text="有効")
 
         row_resize_dir.prop(scene.resize_pro, "dir", expand=True)  
 
         if scene.grab_pro.enabled:
-            col2.enabled = True
+            row_grab_dir.enabled = True
         else:
-            col2.enabled = False
+            row_grab_dir.enabled = False
         if scene.rotate_pro.enabled:
-            col4.enabled = True
+            row_rotate_dir.enabled = True
         else:
-            col4.enabled = False
+            row_rotate_dir.enabled = False
         if scene.resize_pro.enabled:
-            col6.enabled = True
+            row_resize_dir.enabled = True
         else:
-            col6.enabled = False
+            row_resize_dir.enabled = False
 
 class TextSenderPanel(bpy.types.Panel):
     bl_idname = "MMZ_PT_Textsender"
@@ -203,6 +200,7 @@ class ToolsPanel(bpy.types.Panel):
         row2 = layout.row()
         row1.operator("mmz.textremesh_operator", text="テキストリメッシュ", icon="FILE_TEXT")
         row1.operator("mmz.getmiddletoorigin_operator", text="原点移動", icon="TRANSFORM_ORIGINS")
+
         row2.operator("mmz.wireframeswitch_operator", text="表示切替", icon="MOD_WIREFRAME")
         row2.operator("mmz.applymodifier_operator", text="モディファイアを適用", icon="MODIFIER")
 
@@ -249,7 +247,7 @@ class AddBooleanPanel(bpy.types.Panel):
 
 class ChangeResolutionPanel(bpy.types.Panel):
     bl_idname = "MMZ_PT_ChangeResolution"
-    bl_label = "解像度変更"
+    bl_label = "レンダリング設定変更"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "MMZ"

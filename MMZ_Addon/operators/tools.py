@@ -76,12 +76,29 @@ class ApplyAllModifierOperator(bpy.types.Operator):
         print("MMZ Add-on: ApplyAllModifier: running.")
 
         selected_obj = bpy.context.selected_objects
-        
+        active_obj = bpy.context.active_object
+        used_mode = bpy.context.object.mode
+
+        if used_mode == "EDIT":
+            bpy.ops.object.mode_set(mode = "OBJECT")
+        elif used_mode == "OBJECT":
+            pass
+        else:
+            print("MMZ Add-on: AutoMarge: Error: Unavailable Mode.")
+            return{"CANCELLED"}
+
         if selected_obj:
             for obj in selected_obj:
-                if obj.modifiers and obj.type == "MESH":
-                    for mod in obj.modifiers:
-                        bpy.ops.object.modifier_apply(modifier=mod.name)
+                if obj.type == "MESH":
+                    bpy.context.view_layer.objects.active = obj
+                    if obj.modifiers:
+                        for mod in obj.modifiers:
+                            bpy.ops.object.modifier_apply(modifier=mod.name)
+
+        if active_obj:
+            bpy.context.view_layer.objects.active = active_obj
+        if used_mode == "EDIT":
+            bpy.ops.object.mode_set(mode = "EDIT")
 
         return{"FINISHED"}
     
@@ -120,7 +137,7 @@ class AddBooleanOperator(bpy.types.Operator):
             bpy.context.scene.collection.children.link(new_collection)
         
         target_name_old = str(bool_target.name) #対象オブジェクトの旧名を取得
-        target_name = f"MMZ_Bool_objects.{target_name_old}/Mode:{mode}" #新しい名前
+        target_name = f"MMZ_Bool:{target_name_old}/Mode:{mode}" #新しい名前
 
         if mode == "DIFFERENCE": #差分モードだったら
             bpy.data.objects[target_name_old].display_type = "WIRE" #対象オブジェクトをワイヤーフレーム表示に

@@ -20,8 +20,6 @@ class GrabAssistOperator(bpy.types.Operator):
                 pos["y"] = True
             if "z" in dir:
                 pos["z"] = True
-            if pos["x"] == pos["y"] == pos["z"] == False:
-                raise RuntimeError("MMZ Add-on: GrabAssist: Error: Nothing has been selected.")
 
             bpy.ops.transform.translate("INVOKE_DEFAULT", constraint_axis=(pos["x"], pos["y"], pos["z"]))
 
@@ -56,8 +54,6 @@ class RotateAssistOperator(bpy.types.Operator):
                 pos["y"] = True
             if "z" in dir:
                 pos["z"] = True
-            if pos["x"] == pos["y"] == pos["z"] == False:
-                raise RuntimeError("MMZ Add-on: RotateAssist: Error: Nothing has been selected.")
             
             bpy.ops.transform.rotate("INVOKE_DEFAULT", constraint_axis=(pos["x"], pos["y"], pos["z"]))
 
@@ -87,8 +83,6 @@ class ResizeAssistOperator(bpy.types.Operator):
                 pos["y"] = True
             if "z" in dir:
                 pos["z"] = True
-            if pos["x"] == pos["y"] == pos["z"] == False:
-                raise RuntimeError("MMZ Add-on: ResizeAssist: Error: Nothing has been selected.")
 
             bpy.ops.transform.resize("INVOKE_DEFAULT", constraint_axis=(pos["x"], pos["y"], pos["z"]))
 
