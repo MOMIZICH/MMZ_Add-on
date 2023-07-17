@@ -210,11 +210,9 @@ class SwitchLanguageOperator(bpy.types.Operator):
         lang = bpy.context.preferences.view.language
         change = ""
         if lang == "ja_JP":
-            bpy.context.preferences.view.language = "en_US"
-            change = "English"
+            change = bpy.context.preferences.view.language = "en_US"
         elif lang == "en_US":
-            bpy.context.preferences.view.language = "ja_JP"
-            change = "Japanese"
+            change = bpy.context.preferences.view.language = "ja_JP"
         else:
             print(f"MMZ Add-on: SwitchLanguage: Error: Unavailable Language({lang}).")
             return{"CANCELLED"}
@@ -222,12 +220,6 @@ class SwitchLanguageOperator(bpy.types.Operator):
         print(f"MMZ Add-on: SwitchLanguage: Success of changing language to {change}.")
         
         return{"FINISHED"}
-
-        
-
-
-
-
 
 def register_classes():
     classes = [
