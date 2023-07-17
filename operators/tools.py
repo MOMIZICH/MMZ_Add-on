@@ -197,6 +197,31 @@ class ReloadCalcOperator(bpy.types.Operator):
         bpy.context.scene.frame_set(frame)
 
         return{"FINISHED"}
+    
+class SwitchLanguageOperator(bpy.types.Operator):
+    bl_idname = "mmz.switchlanguage_operator"
+    bl_label = "Switch Language Operator"
+    bl_description = "日本語と英語を切り替えます。"
+
+    print("MMZ Add-on: SwitchLanguage: loaded.")
+
+    def execute(self, context):
+        print("MMZ Add-on: SwitchLanguage: Toggled.")
+
+        lang = bpy.context.preferences.view.language
+        if lang == "ja_JP":
+            bpy.context.preferences.view.language = "en_US"
+        elif lang == "en_US":
+            bpy.context.preferences.view.language = "ja_JP"
+        else:
+            print(f"MMZ Add-on: SwitchLanguage: Error: Unavailable Language({lang}).")
+            return{"CANCELLED"}
+        
+        return{"FINISHED"}
+
+        
+
+
 
 
 
@@ -206,7 +231,8 @@ def register_classes():
         ApplyAllModifierOperator,
         AddBooleanOperator,
         WireFrameSwitchOperator,
-        ReloadCalcOperator
+        ReloadCalcOperator,
+        SwitchLanguageOperator
     ]
     return classes
 

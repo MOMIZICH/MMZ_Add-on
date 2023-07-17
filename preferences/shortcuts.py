@@ -66,6 +66,9 @@ def register():
         km = kc.keymaps.new(name="3D View", space_type="VIEW_3D")
         kmi = km.keymap_items.new("mmz.addonmenu_piemenu_call", "X", "PRESS", alt=True)
         addon_keymaps.append((km, kmi))
+        km = kc.keymaps.new(name="3D View", space_type="VIEW_3D")
+        kmi = km.keymap_items.new("mmz.switchlanguage_operator", "F1", "PRESS")
+        addon_keymaps.append((km, kmi))
 
 
 def unregister():
