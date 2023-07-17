@@ -46,7 +46,7 @@ class RotateAssistOperator(bpy.types.Operator):
         def Rotate(self, context):
             #軸の設定を取得
             pos = {"x": False, "y": False, "z": False}
-            dir = bpy.context.scene.grab_pro.dir
+            dir = bpy.context.scene.rotate_pro.dir
             
             if "x" in dir:
                 pos["x"] = True
@@ -75,7 +75,7 @@ class ResizeAssistOperator(bpy.types.Operator):
         def Resize(self, context):
             #軸の設定を取得
             pos = {"x": False, "y": False, "z": False}
-            dir = bpy.context.scene.grab_pro.dir
+            dir = bpy.context.scene.resize_pro.dir
             
             if "x" in dir:
                 pos["x"] = True
