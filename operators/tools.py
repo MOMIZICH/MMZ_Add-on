@@ -220,8 +220,7 @@ class SwitchLanguageOperator(bpy.types.Operator):
             print(f"MMZ Add-on: SwitchLanguage: Error: Unavailable Language({lang}).")
             return{"CANCELLED"}
         
-        #インターフェース以外の翻訳を無効にする
-        bpy.context.preferences.view.use_translate_tooltips = False
+        #インターフェースとツールチップ以外の翻訳を無効にする
         bpy.context.preferences.view.use_translate_new_dataname = False
         
         print(f"MMZ Add-on: SwitchLanguage: Success of changing language to {change}.")
