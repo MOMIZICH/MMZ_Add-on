@@ -144,17 +144,17 @@ class TransformAssistPanel(bpy.types.Panel):
         row_resize_dir.prop(scene.resize_pro, "dir", expand=True)  
 
         if scene.grab_pro.enabled:
-            row_grab_dir.enabled = True
+            row_grab_dir.active = True
         else:
-            row_grab_dir.enabled = False
+            row_grab_dir.active = False
         if scene.rotate_pro.enabled:
-            row_rotate_dir.enabled = True
+            row_rotate_dir.active = True
         else:
-            row_rotate_dir.enabled = False
+            row_rotate_dir.active = False
         if scene.resize_pro.enabled:
-            row_resize_dir.enabled = True
+            row_resize_dir.active = True
         else:
-            row_resize_dir.enabled = False
+            row_resize_dir.active = False
 
 class TextSenderPanel(bpy.types.Panel):
     bl_idname = "MMZ_PT_Textsender"
@@ -198,11 +198,15 @@ class ToolsPanel(bpy.types.Panel):
         
         row1 = layout.row()
         row2 = layout.row()
+        row3 = layout.row()
+
         row1.operator("mmz.textremesh_operator", text="テキストリメッシュ", icon="FILE_TEXT")
         row1.operator("mmz.getmiddletoorigin_operator", text="原点移動", icon="TRANSFORM_ORIGINS")
 
         row2.operator("mmz.wireframeswitch_operator", text="表示切替", icon="MOD_WIREFRAME")
         row2.operator("mmz.applymodifier_operator", text="モディファイアを適用", icon="MODIFIER")
+
+        #row3.operator("mmz.reloadcalc_operator", text="再描画", icon="RENDER_ANIMATION")
 
 
 class AddBooleanPanel(bpy.types.Panel):

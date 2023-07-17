@@ -18,6 +18,12 @@ load_time = load_time.replace(" ", "_")
 
 print(f"MMZ Add-on: Info: loaded at {load_time}.")
 
+if "bpy" in locals():
+    import importlib
+    for module_name in ["properties", "fanc_panels", "shortcuts", "transformassist",  "tools"]:
+        if module_name.title() in locals():
+            importlib.reload(locals()[module_name.title()])
+
 #from .func_panels import AutomergePanel
 #from .func_panels import ExtrudeCancelPanel
 from .operators.transformassist import *

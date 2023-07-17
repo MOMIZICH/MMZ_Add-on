@@ -28,6 +28,10 @@ class GetMiddleToOriginOperator(bpy.types.Operator):
                 bpy.ops.object.mode_set(mode = "EDIT")
             else:
                 print("MMZ Add-on: GetMiddlePoint: Error: Unavailable Mode.")
+
+                if used_mode == "EDIT":
+                    bpy.ops.object.mode_set(mode = "EDIT")
+                
                 return{"CANCELLED"}
 
             obj = bpy.context.active_object
@@ -175,6 +179,24 @@ class WireFrameSwitchOperator(bpy.types.Operator):
                     obj.display_type = "WIRE"
 
         return{"FINISHED"}
+    
+class ReloadCalcOperator(bpy.types.Operator):
+    bl_idname = "mmz.reloadcalc_operator"
+    bl_label = "Reload Calc Operator"
+    bl_description = "アニメーションを更新します"
+    bl_options = {"REGISTER", "UNDO"}
+
+    print("MMZ Add-on: ReloadCalc: loaded.")
+
+    def execute(self, context):
+        print("MMZ Add-on: ReloadCalc: running.")
+
+        frame = bpy.context.scene.frame_current
+
+        bpy.context.scene.frame_set(0)
+        bpy.context.scene.frame_set(frame)
+
+        return{"FINISHED"}
 
 
 
@@ -183,7 +205,8 @@ def register_classes():
         GetMiddleToOriginOperator,
         ApplyAllModifierOperator,
         AddBooleanOperator,
-        WireFrameSwitchOperator
+        WireFrameSwitchOperator,
+        ReloadCalcOperator
     ]
     return classes
 
