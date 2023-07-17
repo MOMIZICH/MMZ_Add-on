@@ -212,13 +212,17 @@ class SwitchLanguageOperator(bpy.types.Operator):
         lang_1 = "en_US"
         lang_2 = "ja_JP"
         
-        if lang == lang_1:
+        if lang == lang_1: #英語だったら日本語にしてchangeに代入
             change = bpy.context.preferences.view.language = lang_2
-        elif lang == lang_2:
+        elif lang == lang_2: #日本語だったら英語にしてchangeに代入
             change = bpy.context.preferences.view.language = lang_1
         else:
             print(f"MMZ Add-on: SwitchLanguage: Error: Unavailable Language({lang}).")
             return{"CANCELLED"}
+        
+        #インターフェース以外の翻訳を無効にする
+        bpy.context.preferences.view.use_translate_tooltips = False
+        bpy.context.preferences.view.use_translate_new_dataname = False
         
         print(f"MMZ Add-on: SwitchLanguage: Success of changing language to {change}.")
         
